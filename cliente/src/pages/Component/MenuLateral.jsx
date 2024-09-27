@@ -7,7 +7,7 @@ import {
   StackOverflowLogo,
   ArrowCircleRight,
 } from "phosphor-react";
-import Logo from '../Component/img/Logo.jpg';
+import motologo from '../Component/img/motolog.jpeg';
 import React, { useContext } from 'react';
 import { UserContext } from '../../userContext';
 
@@ -33,7 +33,7 @@ export const SidebarComponent = () => {
 
   return (
     <Sidebar aria-label="Sidebar with multi-level dropdown example">
-      <img src={Logo} alt="" className='w-[150px] h-[150px] border rounded p-1' />
+      <img src={motologo} alt="" className='w-[150px] h-[150px] border rounded p-1' />
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {(user && user.role === 'admin' ? menuItemsAd : menuItems).map(element => (

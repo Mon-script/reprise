@@ -1,7 +1,7 @@
 // TarjetaStock.js
 import React, { useState } from 'react';
 import './TarjetaStock.css'; // Asegúrate de importar tu archivo de estilos
-import Logo from '../img/Logo.jpg';
+import Logo from '../img/motolog.jpeg';
 import CodigodeBarras2 from '../codigodebarra/CodigodeBarras2';
 
 const TarjetaStock = ({ producto }) => {
