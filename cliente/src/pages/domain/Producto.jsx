@@ -244,12 +244,12 @@ export const Producto = () => {
         isOpen={modalAbierto}
         onRequestClose={() => manejadorModal(false, null)}
       >
-        <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto mt-10 border border-gray-300 rounded-lg bg-white opacity-100">
+        <div className="max-w-lg mx-auto mt-10 border border-gray-300 rounded-lg shadow-lg">
           <div className="card bg-white opacity-100">
             <img
               src={'http://localhost:3000/' + imagenActual}
               alt="producto"
-              className="w-full h-100 object-cover rounded-t-lg"
+              className="h-64 w-full object-contain"
             />
             <div className="card-body flex justify-between px-4 py-2">
               

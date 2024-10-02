@@ -14,12 +14,16 @@ INSERT INTO USUARIO (usuario, contrasena,rol) VALUES
     ('user3', '1234','empleado'),
     ('user4', '1234','empleado');
 
+ALTER TABLE USUARIO ADD COLUMN activo BOOLEAN DEFAULT TRUE;
+
 CREATE TABLE PRODUCTO (
 id_codigo_barra bigint primary key  not null,
 nombre varchar(50) not null,
 avatar LONGBLOB not null,
 calidad VARCHAR(20) NOT NULL
 );
+
+ALTER TABLE PRODUCTO ADD COLUMN activo BOOLEAN DEFAULT TRUE;
 
 CREATE TABLE ENTRADA(
     id int primary key auto_increment not null,

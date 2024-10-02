@@ -41,7 +41,7 @@ module.exports.saveProduct = (req, res) =>{
 }
 
 module.exports.getProducts =(req,res)=>{
-    const consult = 'SELECT * FROM PRODUCTO';
+    const consult = 'SELECT * FROM PRODUCTO WHERE activo = TRUE';
     try{
         connection.query(consult,(err,result)=>{
             if(err){
@@ -70,7 +70,7 @@ module.exports.getProducts =(req,res)=>{
 
 module.exports.deleteProducts =(req,res)=>{
     console.log(req.params.id)
-    const consult = 'DELETE from PRODUCTO WHERE id_codigo_barra = (?)';
+    const consult = 'UPDATE PRODUCTO SET activo = false WHERE id_codigo_barra = (?)';
     try{
         connection.query(consult,[req.params.id],(err,result)=>{
             if(err){
