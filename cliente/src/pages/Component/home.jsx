@@ -4,7 +4,7 @@ import motologon from '../../assets/motologon.jpeg'
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen bg-red-600">
-      <header className="bg-red-600 py-6">
+      <header className="bg-black py-6">
         <div className="container mx-auto flex justify-between items-center px-6">
           <h1 className="text-white text-center text-3xl font-bold">REPRISE</h1>
 
@@ -51,7 +51,7 @@ const Home = () => {
         </section>
 
       </main>
-      <footer className="bg-red-800 py-6">
+      <footer className="bg-black py-6">
         <div className="container mx-auto text-center text-white">
           <p>Derechos de autor © 2024 Reprise. Todos los derechos reservados.</p>
         </div>
