@@ -1,25 +1,20 @@
-import React from 'react'
-import { useState } from 'react';
-import "./LoginRegister.css";
+import React, { useState, useContext } from 'react';
 import { FaUser, FaLock } from "react-icons/fa";
-import {Root} from '../Root'
-import { Outlet } from 'react-router-dom';
+import { UserContext } from '../../../userContext';
 
- const Login1 = () => {
+const Login1 = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [loginSuccessful, setLoginSuccessful] = useState(false);
+    const { setUser } = useContext(UserContext);
 
-
-    const manejarEnviar = (e) =>{
+    const manejarEnviar = (e) => {
         e.preventDefault();
         const data = {
             username: username,
             password: password
         };
-        //console.log("El usuario es: "+ username + " y su contraseña es: " + password )
 
-        //aqui empiesa la peticion
+        // Aquí empieza la petición
         fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
@@ -27,45 +22,58 @@ import { Outlet } from 'react-router-dom';
             },
             body: JSON.stringify(data)
         })
-            .then(response=> response.json())
+            .then(response => response.json())
             .then(result => {
-                console.log(result.token)
-                if(result.token){
-                    localStorage.setItem('token', result.token)
-                    setLoginSuccessful(true);
+                if (result.token) {
+                    // Extraer el payload del token
+                    const { role } = parseJWT(result.token);
+                    localStorage.setItem('token', result.token);
+                    setUser({ token: result.token, role }); // Asegúrate de establecer también el rol del usuario
                 } else {
-                    setLoginSuccessful(false);
+                    setUser(null);
                 }
             })
-            .catch(error =>{
-                console.log(error)
-            })
-        //aqui termina
-    }
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    const parseJWT = (token) => {
+        if (!token) return {};
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+
+        return JSON.parse(jsonPayload);
+    };
 
     return (
-        <> {loginSuccessful ? <Outlet />:
         <div className='contenedorbody'>
-              <div className='wrapper'>
-           <div className='form-box login'>
-             <form action="">
-                 <h1>Login</h1>
-                 <div className="input-box">
-                     <input onChange={(e)=>{setUsername(e.target.value)}} type="text" placeholder='Usuario' required /><FaUser className='icon'/>
-                 </div>
-                 <div className="input-box">
-                     <input onChange={(e)=>{setPassword(e.target.value)}} type="password" placeholder='Contraseña' required /><FaLock className='icon'/>
-                 </div>
-                 <div className="remember-forgot">
-                     <label><input type="checkbox" /> Recuerdame</label>
-                 </div>
-                 <button onClick={manejarEnviar}>Ingresar</button>
-             </form>
+            <div className='wrapper'>
+                <div className='form-box login'>
+                    <form action="">
+                        <h1>Login</h1>
+                        <div className="input-box">
+                            <input onChange={(e) => { setUsername(e.target.value) }} type="text" placeholder='Usuario' required /><FaUser className='icon' />
+                        </div>
+                        <div className="input-box">
+                            <input onChange={(e) => { setPassword(e.target.value) }} type="password" placeholder='Contraseña' required /><FaLock className='icon' />
+                        </div>
+                        <div className="remember-forgot">
+                            <label><input type="checkbox" /> Recuérdame</label>
+                        </div>
+                        <button onClick={manejarEnviar}>Ingresar</button>
+                    </form>
+                </div>
             </div>
-         </div>
-        </div>}</>
-        
-   )
- }
- export default Login1
- 
+        </div>
+    )
+}
+
+export default Login1;
+
