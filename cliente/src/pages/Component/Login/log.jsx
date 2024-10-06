@@ -5,7 +5,7 @@ import { UserContext } from '../../../userContext';
 const Login1 = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const { setUser } = useContext(UserContext);
+    const { setUser, recibido, setRecibido } = useContext(UserContext);
 
     const manejarEnviar = (e) => {
         e.preventDefault();
@@ -28,7 +28,8 @@ const Login1 = () => {
                     // Extraer el payload del token
                     const { role } = parseJWT(result.token);
                     localStorage.setItem('token', result.token);
-                    setUser({ token: result.token, role }); // Asegúrate de establecer también el rol del usuario
+                    setUser({ token: result.token, role });
+                    setRecibido(!recibido);// Asegúrate de establecer también el rol del usuario
                 } else {
                     setUser(null);
                 }
