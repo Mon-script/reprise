@@ -6,7 +6,7 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [recibido, setRecibido] = useState(false)
-    const [loading, setLoading] = useState(true); // Nuevo estado de carga
+
 
     useEffect(() => {
         console.log("useEffect ejecutado"); // Verificar si se está ejecutando
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
             console.log("No hay token"); // Verificar si no hay token
         }
     
-        setLoading(false);
+        
     }, [recibido]);
     
 
@@ -61,9 +61,7 @@ export const UserProvider = ({ children }) => {
     };
 
     // Mostrar un loader si estamos verificando el token
-    if (loading) {
-        return <div>Cargando...</div>;
-    }
+    
 
     return (
         <UserContext.Provider value={{ user, setUser,recibido, setRecibido }}>

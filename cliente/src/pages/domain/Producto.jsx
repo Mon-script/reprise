@@ -9,14 +9,14 @@ export const Producto = () => {
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState('');
   const [codigoBarra, setCodigoBarra] = useState('');
-  const [calidad, setCalidad] = useState('');
+  const [marca, setMarca] = useState('');
   const [photo, setPhoto] = useState('');
   const [files, setFiles] = useState([]);
   const [fileupdated, setFileupdated] = useState(false)
   const [modalAbierto, setModalAbierto] = useState(false)
   const [imagenActual, setIamgenActual] = useState(null)
   const [nombreActual, setNombreActual] = useState('')
-  const [calidadActual, setCalidadActual] = useState('')
+  const [marcaActual, setMarcaActual] = useState('')
   const [idActual, setIdActual] = useState('')
 
 
@@ -42,13 +42,14 @@ export const Producto = () => {
     formdata.append('nombre', name)
     formdata.append('avatar', photo)
     formdata.append('codigoBarra', parseInt(codigoBarra))
-    formdata.append('calidad', calidad)
+    formdata.append('marca', marca)
     /* const data = {
        nombre: JSON.stringify(name),
        avatar: avatarProcesado
      }*/
 
-    if (!name || !photo || !calidad || !codigoBarra) {
+    if (!name || !photo || !marca || !codigoBarra) {
+     
       alert('ERROR, Debes todo el formulario para poder enviarlo PUTARDO')
       return
     } else {
@@ -59,10 +60,10 @@ export const Producto = () => {
         body: formdata
       })
         .then(response => response.text())
-        .then(response => {
+        .then(data => {
 
 
-          console.log(response)
+          console.log(data)
           setFileupdated(true)
 
         })
@@ -72,7 +73,7 @@ export const Producto = () => {
 
       setName('');
       setPhoto('');
-      setCalidad('');
+      setMarca('');
       document.getElementById("NOMBRE").value = ""
       document.getElementById("FOTO").value = null
       setShowForm(false);
@@ -90,9 +91,9 @@ export const Producto = () => {
       let imageninfo = imagenActual.split('-');
       let id = parseInt(imageninfo[0]);
       let nombree = imageninfo[1];
-      let calidaa = imageninfo[2];
+      let marcaa = imageninfo[2];
 
-      fetch('http://localhost:3000/producto/delete/' + id +'/'+ nombree +'/'+ calidaa, {
+      fetch('http://localhost:3000/producto/delete/' + id +'/'+ nombree +'/'+ marcaa, {
         method: 'DELETE'
       })
         .then(resp => resp.text())
@@ -110,9 +111,9 @@ export const Producto = () => {
     let imageninfo = imagenActual.split('-');
     let id = imageninfo[0];
     let nombree = imageninfo[1];
-    let calidaa = imageninfo[2];
-    console.log(nombree,calidaa)
-    setCalidadActual(calidaa)
+    let marcaa = imageninfo[2];
+    console.log(nombree,marcaa)
+    setMarcaActual(marcaa)
     setNombreActual(nombree)
     setIdActual(id)
   }
@@ -127,7 +128,7 @@ export const Producto = () => {
             onClick={() => {setShowForm(true)
               setName('');
               setPhoto('');
-              setCalidad('')
+              setMarca('')
             }}
             hidden={showForm ? true : false}
           >
@@ -166,16 +167,16 @@ export const Producto = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="calidad" className="block text-sm font-medium text-gray-700 mb-1">
-                    Introducir calidad de producto:
+                  <label htmlFor="marca" className="block text-sm font-medium text-gray-700 mb-1">
+                    Introducir marca de producto:
                   </label>
                   <input
-                    id="calidad"
+                    id="marca"
                     className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
                     type="text"
                     required
-                    value={calidad}
-                    onChange={(e) => setCalidad(e.target.value.toLowerCase())}
+                    value={marca}
+                    onChange={(e) => setMarca(e.target.value.toLowerCase())}
 
                   />
                 </div>
@@ -253,7 +254,7 @@ export const Producto = () => {
             />
             <div className="card-body flex justify-between px-4 py-2">
               
-              <article><h3>Nombre: {nombreActual.toUpperCase()} <br /> Calidad: {calidadActual.toUpperCase()} <br /> Codigo: {idActual.toUpperCase()} </h3></article>
+              <article><h3>Nombre: {nombreActual.toUpperCase()} <br /> Marca: {marcaActual.toUpperCase()} <br /> Codigo: {idActual.toUpperCase()} </h3></article>
               <button
                 onClick={manejarBorrar}
                 className="bg-red-500 text-white p-2 rounded-md mt-2"
@@ -271,3 +272,4 @@ export const Producto = () => {
 
 
 }
+

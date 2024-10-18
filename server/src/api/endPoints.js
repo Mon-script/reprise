@@ -8,6 +8,7 @@ const {getProducts}=require('../controllers/productoController')
 const {deleteProducts}=require('../controllers/productoController')
 const {getStock}=require('../controllers/stockcontroller')
 const {postEntrada}=require('../controllers/stockcontroller')
+const {registrarUsuario, getUsuarios}= require('../controllers/userController')
 const multer=require('multer')
 const path = require('path');
 const { getEntrada } = require('../controllers/entradaController');
@@ -17,7 +18,7 @@ const almacenamientoTemporal= multer.diskStorage({
     // que donde es ejecutada(con js) devuelve la ruta
     // donde esta/el metodo join une en una ruta sus argumentos.
     filename: (req,avatar,callBack)=>{{
-        callBack(null,Date.now()+'-berry-'+ avatar.originalname)
+        callBack(null,Date.now()+'-reprise-'+ avatar.originalname)
     }}
 })
 
@@ -36,11 +37,13 @@ router.get('/salida',getSalida);
 router.get('/entrada',getEntrada);
 router.get('/productos/get',getProducts);
 router.get('/stock/get',getStock);
+router.get('/getUsuarios',getUsuarios);
 
 router.post('/login', login);
+router.post('/registroUser', registrarUsuario);
 router.post('/saveProduct',avatarSubir, saveProduct);
 router.post('/post/entrada', postEntrada);
-router.delete('/producto/delete/:id/:nombree/:calidaa',deleteProducts)
+router.delete('/producto/delete/:id/:nombree/:calidaa',deleteProducts);
 
 
 module.exports = router;

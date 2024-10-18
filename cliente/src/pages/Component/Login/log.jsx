@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { FaUser, FaLock } from "react-icons/fa";
 import { UserContext } from '../../../userContext';
-
+import './LoginRegister.css'
 const Login1 = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
