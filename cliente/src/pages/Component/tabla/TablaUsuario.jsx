@@ -8,6 +8,7 @@ import { UserContext } from '../../../userContext';
 
 export const TablaUsuario = () => {
   const [dataArray, setData] = useState([]);
+  const [update, setUpdate] = useState(false)
   const { user } = useContext(UserContext);
   useEffect(() => {
     fetch('http://localhost:3000/getUsuarios', {
@@ -24,7 +25,28 @@ export const TablaUsuario = () => {
       .catch(error => {
         console.log(error);
       });
-  }, []);
+      console.log(user);
+      setUpdate(false)
+  }, [update]);
+
+  const inabilitarUser = (id)=>{
+    if (window.confirm('¿Está seguro de inabilitar este usuario?')){
+      fetch('http://localhost:3000/deleteUsuario/'+id,{method:'DELETE'})
+    .then(resp =>( resp.text() ))
+    .then(resp =>{console.log(resp)})
+    setUpdate(true)
+    }
+    
+
+  }
+  const abilitarUser = (id)=>{
+    if (window.confirm('¿Está seguro de rectivar este usuario?')){
+      fetch('http://localhost:3000/reintegrarUsuario/'+id,{method:'PUT'})
+    .then(resp =>( resp.text() ))
+    .then(resp =>{console.log(resp)})
+    setUpdate(true)
+    }
+  }
 
   return (
     <Table showCheckbox={true}>
@@ -83,12 +105,17 @@ export const TablaUsuario = () => {
                 <Popover.Container className="!mt-0 !block">
                   <ul>
                     <li className="rounded px-2 py-1 hover:bg-metal-100">
-                      <button className="flex w-full items-center justify-between text-body-4 font-normal text-metal-600">
+                      {item.activo===1? <button onClick={()=>inabilitarUser(item.id)} className="flex w-full items-center justify-between text-body-4 font-normal text-metal-600">
                         <span>Delete</span>
                         <span>
                           <Trash />
                         </span>
-                      </button>
+                      </button>  :   <button onClick={()=>abilitarUser(item.id)} className="flex w-full items-center justify-between text-body-4 font-normal text-metal-600">
+                        <span>Activar</span>
+                        <span>
+                          <Crown />
+                        </span>
+                      </button>}
                     </li>
                   </ul>
                 </Popover.Container>

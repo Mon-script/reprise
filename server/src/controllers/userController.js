@@ -49,6 +49,49 @@ module.exports.getUsuarios =(req,res)=>{
 
 
 }
+
+module.exports.deleteUsuario = (req, res) => {
+    const consult = `UPDATE USUARIO
+                    SET activo = 0
+                    WHERE id = (?);`;
+    try {
+        connection.query(consult, [req.params.id], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send(err);
+            } else if (result.affectedRows > 0) {
+                res.status(200).send('Usuario deshabilitado');
+            } else {
+                res.status(404).send('Usuario no encontrado');
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al procesar la solicitud');
+    }
+};
+
+module.exports.reintegroUsuario = (req, res) => {
+    const consult = `UPDATE USUARIO
+                    SET activo = 1
+                    WHERE id = (?);`;
+    try {
+        connection.query(consult, [req.params.id], (err, result) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send(err);
+            } else if (result.affectedRows > 0) {
+                res.status(200).send('Usuario habilitado');
+            } else {
+                res.status(404).send('Usuario no encontrado');
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al procesar la solicitud');
+    }
+};
+
 /*const bcrypt = require('bcrypt');
 const connection = require('../models/db');
 const jwt = require('jsonwebtoken');
