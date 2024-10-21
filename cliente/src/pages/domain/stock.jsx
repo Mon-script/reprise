@@ -1,19 +1,21 @@
-
-import TarjetaStock from "../Component/tarjetas/TarjetaStock";
 import TablasEstantes from '../Component/estante/estante'
 import "./Stockpag.css";
 import { useState, useEffect } from "react";
+
 
 export const Stock = () => {
   const [showForm, setShowForm] = useState('')
   const [codigoProducto, setCodigoProducto] = useState('')
   const [estanteria, setEstanteria] = useState('')
   const [productos, setProductos] = useState('')
+  const [productosid, setProductosid] = useState([])
   const [stockActializado, setStockActualizado] = useState(false)
+
+
 
   useEffect(() => {
 
-    
+
     fetch('http://localhost:3000/stock/get')
       .then(response => response.json())
       .then(response => {
@@ -22,51 +24,72 @@ export const Stock = () => {
       })
       .catch(error => { console.error(error) })
 
-      setStockActualizado(false)
+    setStockActualizado(false)
+
+
+    fetch('http://localhost:3000/productos/get/id')
+      .then(response => response.json())
+      .then(response => {
+        // Transforma el resultado en un array simple de IDs
+        const ids = response.map(item => item.id_codigo_barra);
+        setProductosid(ids);
+        console.log(ids);
+      })
+      .catch(error => { console.error(error) });
+
   }, [stockActializado])
 
 
 
   const agregarEntrada = () => {
-   /* if (estanteria < 1 && estanteria > numEstantes) {
-      alert(`Debes indicar un estante entre 1 y ${numEstantes} `)
-      return
-    }*/
+    /* if (estanteria < 1 && estanteria > numEstantes) {
+       alert(`Debes indicar un estante entre 1 y ${numEstantes} `)
+       return
+     }*/
 
-    if(!codigoProducto||!estanteria){
+    if (!codigoProducto || !estanteria) {
       alert('Todos los campos deben estar completados')
+      return
+    }
+    if (productosid.includes(parseInt(codigoProducto))) {
+
+      const now = new Date(); // trae la fecha y hora actual
+      const fecha = now.toISOString().split('T')[0]; // Fecha en formato YYYY-MM-DD
+      const hora = now.toTimeString().split(' ')[0]; // Hora en formato HH:MM:SS
+
+      const data = {
+        codigo: codigoProducto,
+        estante: parseInt(estanteria),
+        fecha: fecha,
+        hora: hora
+      };
+
+      fetch('http://localhost:3000/post/entrada', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(resp => {
+          if (!resp.ok) {
+            throw new Error(`HTTP error! status: ${resp.status}`);
+          }
+          return resp.text();
+        })
+        .then(respText => console.log(respText))
+        .catch(error => console.error('Error:', error));
+
+
+      setStockActualizado(true)
+      setCodigoProducto('');
+      setEstanteria('');
+      setShowForm(false)
     }
 
 
-    const now = new Date(); // trae la fecha y hora actual
-    const fecha = now.toISOString().split('T')[0]; // Fecha en formato YYYY-MM-DD
-    const hora = now.toTimeString().split(' ')[0]; // Hora en formato HH:MM:SS
 
-    const data = {
-      codigo: codigoProducto,
-      estante: parseInt(estanteria),
-      fecha: fecha, 
-      hora: hora   
-    };
 
-    fetch('url', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(resp => {
-        if (!resp.ok) {
-          throw new Error(`HTTP error! status: ${resp.status}`);
-        }
-        return resp.text();
-      })
-      .then(respText => alert(respText))
-      .catch(error => console.error('Error:', error));
-    
-
-      setStockActualizado(true)
   }
 
   return <>
@@ -146,7 +169,13 @@ export const Stock = () => {
     <TablasEstantes productos={productos} /> </>
 };
 
-/*export const Stock=()=>{
+/*
+if (productosid.includes(parseInt(codigoProducto))) {  // Verifica si el código ya existe
+      alert('El ID del producto ya existe. Por favor, introduce un ID diferente.')
+      return
+    }
+
+export const Stock=()=>{
 
   const matrizEjemplo = [
     // Estante 1

@@ -75,8 +75,8 @@ export const TablaEntrada = ( ) => {
               </div>
             </Table.Cell>
             <Table.Cell>
-              <p className="text-body-5 font-medium text-metal-500">Calidad</p>
-              <p className="text-body-6 font-normal text-metal-500">{item.calidad}</p>
+              <p className="text-body-5 font-medium text-metal-500">Marca</p>
+              <p className="text-body-6 font-normal text-metal-500">{item.marca}</p>
             </Table.Cell>
             <Table.Cell>
               <Popover showDismissIcon={false} showArrow={false} className="w-52 border border-metal-100 p-2">

@@ -6,7 +6,7 @@ module.exports.getSalida = (req, res) => {
     S.id AS salida_id,
     P.id_codigo_barra,
     P.nombre AS producto_nombre,
-    P.calidad,
+    P.marca,
     U.id AS empleado_id,
     U.usuario AS empleado_nombre,
     S.fecha,

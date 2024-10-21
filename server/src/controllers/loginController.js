@@ -22,9 +22,10 @@ module.exports.login = (req, res) => {
 
                 if (passwordMatch) {
                     const role = user.rol;
+                    const id = user.id;
 
                     // Firmar el token JWT
-                    const token = jwt.sign({ username, role }, "Stack", {
+                    const token = jwt.sign({ username, role, id }, "Stack", {
                         expiresIn: '3m' // El token expira en 3 minutos
                     });
 

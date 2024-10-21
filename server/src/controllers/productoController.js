@@ -123,6 +123,26 @@ module.exports.getProducts =(req,res)=>{
 
 }
 
+module.exports.getPorductosId = (req, res) => {
+    const consult = `SELECT id_codigo_barra FROM PRODUCTO`;  // Solo selecciona el ID en lugar de todo
+
+    try {
+        connection.query(consult, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).send(err);  // Asegúrate de devolver un estado de error si falla
+            }
+
+           
+            res.status(200).send(result);  // Envía los IDs como respuesta
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err);  // Maneja errores en el bloque try-catch
+    }
+};
+
+
 module.exports.deleteProducts =(req,res)=>{
     console.log(req.params.id)
     const consult = 'UPDATE PRODUCTO SET activo = false WHERE id_codigo_barra = (?)';

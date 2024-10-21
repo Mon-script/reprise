@@ -14,7 +14,7 @@ export const UserProvider = ({ children }) => {
         console.log('Token:', token); // Verificar el token
     
         if (token) {
-            const { exp, role } = parseJWT(token);
+            const { exp, role, id } = parseJWT(token);
             console.log('Exp:', exp, 'Current:', Date.now() / 1000);
     
             const currentTime = Date.now() / 1000;
@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
                 setUser(null);
             } else {
                 console.log("Token válido"); // Confirmar que el token es válido
-                setUser({ token, role });
+                setUser({ token, role, id });
     
                 const expirationTime = (exp * 1000) - Date.now();
     

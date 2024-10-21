@@ -5,7 +5,7 @@ module.exports.getStock = (req, res) => {
     E.id AS entrada_id,
     P.id_codigo_barra,
     P.nombre AS producto_nombre,
-    P.calidad,
+    P.marca,
     E.estante AS estante,
     E.fecha AS fecha,
     E.hora AS hora
@@ -35,7 +35,7 @@ module.exports.postEntrada = (req, res) => {
     (id_codigo_barrafk, estante, fecha, hora) 
     VALUES (?,?,?,?)`;
     try {
-      connection.query(consult[codigo,estante,fecha,hora], (err, result) => {
+      connection.query(consult,[codigo, estante, fecha, hora], (err, result) => {
         if (err) {
           console.error(err);
           res.send(err);

@@ -5,7 +5,7 @@ import Logo from '../img/motolog.jpeg';
 import CodigodeBarras2 from '../codigodebarra/CodigodeBarras2';
 
 const TarjetaStock = ({ producto }) => {
-  const { producto_nombre, calidad, id_codigo_barra, entrada_id, estante, fecha, hora } = producto;
+  const { producto_nombre, marca, id_codigo_barra, entrada_id, estante, fecha, hora } = producto;
 
   const [mostrarFormularioSalida, setMostrarFormularioSalida] = useState(false);
 
@@ -28,7 +28,7 @@ const TarjetaStock = ({ producto }) => {
       <div className="title-1">{producto_nombre}</div>
       <img src={Logo} alt="" className="w-[250px] h-[250px] border rounded p-6" />
       <div className="content">
-        calidad: {calidad} <br />
+        marca: {marca} <br />
         fecha: {fechaFormateada} <br />
         hora: {horaFormateada}
       </div>
