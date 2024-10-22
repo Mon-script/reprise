@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import TarjetaStock from '../tarjetas/TarjetaStock';
 import TarjetaProducto from '../tarjetas/TarjetaProducto';
-const TablasEstantes = ({ productos }) => {
+const TablasEstantes = ({ productos, actualizarpagestock }) => {
   // Si 'productos' no es un array, retornamos un mensaje o manejamos el caso
   if (!Array.isArray(productos)) {
     console.error('Productos no es un array:', productos);
@@ -32,7 +32,7 @@ const TablasEstantes = ({ productos }) => {
         <TabPanel key={estante}>
           <div className="flex flex-wrap">
             {estantes[estante].map((producto, index) => (
-              <TarjetaStock key={index} producto={producto} />
+              <TarjetaStock key={index} producto={producto} actualizarpagestock={actualizarpagestock} />
             ))}
           </div>
         </TabPanel>

@@ -1,59 +1,73 @@
 // CodigodeBarras2.js
-import React, { useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './CodigodeBarra2.css';
+import { UserContext } from '../../../userContext';
 
-const CodigodeBarras2 = ({ estadoForm, Texto, idEntrada }) => {
-  const [codigoBarras, setCodigoBarras] = useState('');
-  const [idEmpleado, setIdEmpleado] = useState('');
+const CodigodeBarras2 = ({ estadoForm, Texto, idEntrada, actualizarpagestock, id_codigo_barra }) => {
+  
+  const { user } = useContext(UserContext);
 
-  const manejarCambioCodigoBarras = (event) => {
-    setCodigoBarras(event.target.value);
-  };
 
-  const manejarCambioIdEmpleado = (event) => {
-    setIdEmpleado(event.target.value);
-  };
+  const now = new Date(); // trae la fecha y hora actual
+      const fecha = now.toISOString().split('T')[0]; // Fecha en formato YYYY-MM-DD
+      const hora = now.toTimeString().split(' ')[0]; // Hora en formato HH:MM:SS
+  useEffect(()=>{
+    console.log(data)
+  }
 
-  const obtenerInformacionCodigoBarras = () => {
-    if (!codigoBarras || !idEntrada || !idEmpleado) {
-      alert('Falta información para proceder');
+
+  ,[])
+
+  const data = {
+    id_codigo_barra: id_codigo_barra,
+    id_empleado: user.id,
+    fecha: fecha,
+    hora: hora,
+    id_entrada: idEntrada
+  }
+
+
+  const manejarEnvioSalida = () => {
+    if (!id_codigo_barra || !user.id) {
+      alert("Error: Código de barras o ID de empleado no válido.");
       return;
     }
 
+    
+
     if (window.confirm('¿Está seguro de enviar este producto a salida?')) {
-      fetch('url/' + idEntrada + '/' + codigoBarras, {
-        method: 'DELETE'
+      fetch('http://localhost:3000/postEntredaSalida', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       })
         .then(resp => resp.text())
         .then(resp => {
-          alert(resp);
+          console.log(resp);
+          actualizarpagestock(true)
         });
     }
 
-    console.log('Código de barras escaneado:', codigoBarras, 'Empleado:', idEmpleado);
+    console.log('Código de barras escaneado:',id_codigo_barra , 'Empleado:', user.id);
     estadoForm(false);
   };
 
   return (
     <div className='CodigoDeBarras2'>
-      <label className='CodigoLabel2' htmlFor="codigoBarras">Ingrese el código de barras: </label>
-      <input
-        className='CodigoInput2'
-        type="number"
-        id="codigoBarras"
-        value={codigoBarras}
-        onChange={manejarCambioCodigoBarras}
-      />
-      <label className='CodigoLabel2' htmlFor="codigoBarras">Ingrese el código de Empleado: </label>
-      <input
-        className='CodigoInput2'
-        type="number"
-        id="idEmpleado"
-        value={idEmpleado}
-        onChange={manejarCambioIdEmpleado}
-      />
+      <h2 className='CodigoLabel2' >
+        Por medio de este comnado usted envia desde nuestras camaras de stock hacia SALIDA nuentro control de produccion saliente,
+        confirme para seguir!
+      </h2> <br />
+      <h3 className='CodigoLabel2' >
+        Codigo del Producto:{id_codigo_barra} <br /><br />
+        Codigo interno de empleado: {user.id}
+
+      </h3>
+      
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button className='CodigoButton2' onClick={obtenerInformacionCodigoBarras}>{Texto}</button>
+        <button className='CodigoButton2' onClick={manejarEnvioSalida}>{Texto}</button>
         <button className='CodigoButton2' onClick={() => estadoForm(false)}>Cerrar</button>
       </div>
     </div>

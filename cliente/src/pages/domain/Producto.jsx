@@ -18,6 +18,7 @@ export const Producto = () => {
   const [nombreActual, setNombreActual] = useState('')
   const [marcaActual, setMarcaActual] = useState('')
   const [idActual, setIdActual] = useState('')
+  const [productosid, setProductosid] = useState([])
 
 
 
@@ -31,6 +32,16 @@ export const Producto = () => {
         console.log(response)
       })
       .catch(error => { console.error(error) })
+
+      fetch('http://localhost:3000/productos/get/id')
+      .then(response => response.json())
+      .then(response => {
+        // Transforma el resultado en un array simple de IDs
+        const ids = response.map(item => item.id_codigo_barra);
+        setProductosid(ids);
+        console.log(ids);
+      })
+      .catch(error => { console.error(error) });
 
     setFileupdated(false)
   }, [fileupdated])
@@ -52,7 +63,12 @@ export const Producto = () => {
      
       alert('ERROR, Debes todo el formulario para poder enviarlo PUTARDO')
       return
-    } else {
+    } 
+
+    if (productosid.includes(parseInt(codigoProducto))) {  // Verifica si el código ya existe
+      alert('El ID del producto ya existe. Por favor, introduce un ID diferente.')
+      return
+    }
 
       fetch('http://localhost:3000/saveProduct', {
         method: 'POST',
@@ -77,7 +93,7 @@ export const Producto = () => {
       document.getElementById("NOMBRE").value = ""
       document.getElementById("FOTO").value = null
       setShowForm(false);
-    }
+    
 
   };
   const manejadorModal = (estaAbierto, imagenActual) => {

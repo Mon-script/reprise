@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { ping } = require('../controllers/pingController');
 const { login } = require('../controllers/loginController')
-const {getSalida}= require('../controllers/salidaControler')
+const {getSalida, postEntredaSalida}= require('../controllers/salidaControler')
 const {saveProduct}=require('../controllers/productoController')
 const {getProducts, getPorductosId}=require('../controllers/productoController')
 const {deleteProducts}=require('../controllers/productoController')
@@ -44,6 +44,7 @@ router.post('/login', login);
 router.post('/registroUser', registrarUsuario);
 router.post('/saveProduct',avatarSubir, saveProduct);
 router.post('/post/entrada', postEntrada);
+router.post('/postEntredaSalida', postEntredaSalida)
 
 router.put('/reintegrarUsuario/:id', reintegroUsuario)
 

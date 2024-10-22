@@ -4,7 +4,7 @@ import './TarjetaStock.css'; // Asegúrate de importar tu archivo de estilos
 import Logo from '../img/motolog.jpeg';
 import CodigodeBarras2 from '../codigodebarra/CodigodeBarras2';
 
-const TarjetaStock = ({ producto }) => {
+const TarjetaStock = ({ producto, actualizarpagestock}) => {
   const { producto_nombre, marca, id_codigo_barra, entrada_id, estante, fecha, hora } = producto;
 
   const [mostrarFormularioSalida, setMostrarFormularioSalida] = useState(false);
@@ -44,6 +44,8 @@ const TarjetaStock = ({ producto }) => {
             estadoForm={setMostrarFormularioSalida}
             Texto="SALIDA"
             idEntrada={entrada_id}
+            id_codigo_barra= {id_codigo_barra}
+            actualizarpagestock={actualizarpagestock}
           />
         )}
       </div>

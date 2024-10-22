@@ -1,27 +1,57 @@
-import { Avatar, Badge, Button, Popover, Table } from 'keep-react';
-import { Crown, DotsThreeOutline, Trash } from 'phosphor-react';
-import { FechayHora } from "../DatePicker";
-import { ExcelExporter } from "../botones/exportExelBoton";
 import { useEffect, useState, useContext } from 'react';
 import { format } from 'date-fns';
+import { Table, Avatar, Badge, Popover, Button } from 'keep-react';
+import { ExcelExporter } from "../botones/exportExelBoton";
+import { FechayHora } from "../DatePicker";
+import { Crown, DotsThreeOutline, Trash } from 'phosphor-react';
 import { UserContext } from '../../../userContext';
 
 export const TablaSalida = () => {
   const [dataArray, setData] = useState([]);
   const { user } = useContext(UserContext);
+
+  // Función para convertir fecha y hora en objeto Date
+  const createDateTime = (fecha, hora) => {
+    const datePart = fecha.split('T')[0]; // Solo obtenemos la parte de la fecha
+    const timePart = hora; // La hora permanece igual
+    const dateTimeString = `${datePart}T${timePart}`; // Formato: 'YYYY-MM-DDTHH:mm:ss'
+    const date = new Date(dateTimeString);
+    console.log(`Fecha: ${datePart}, Hora: ${timePart}, Date Object: ${date}`); // Verifica el objeto Date
+    return date;
+  };
+
+  // Función para ordenar los datos por fecha y hora utilizando el método de inserción
+  const insertionSort = (data) => {
+    const sortedArray = [];
+    data.forEach(item => {
+      const dateTime = createDateTime(item.fecha, item.hora);
+      console.log(`Item: ${item.producto_nombre}, DateTime: ${dateTime}`); // Verifica el objeto Date
+
+      // Insertar en el lugar correcto
+      let j = sortedArray.length - 1;
+      while (j >= 0 && createDateTime(sortedArray[j].fecha, sortedArray[j].hora) < dateTime) {
+        j--;
+      }
+      sortedArray.splice(j + 1, 0, item);
+    });
+    return sortedArray;
+  };
+
   useEffect(() => {
     fetch('http://localhost:3000/salida', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
-      .then(response => response.json())
-      .then(result => {
-        setData(result);
-        console.log(result);
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Datos recibidos:', result); // Verifica los datos
+        const sortedData = insertionSort(result);
+        setData(sortedData);
+        console.log('Datos ordenados:', sortedData); // Verifica los datos ordenados
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
@@ -34,9 +64,7 @@ export const TablaSalida = () => {
             <p className="text-body-1 font-semibold text-metal-600">Salida</p>
           </div>
           <div className="flex items-center gap-5">
-            {/* Aquí va el botón */}
             <ExcelExporter data={dataArray} fileName="table_data" />
-            {/* Aquí termina el espacio del botón */}
             <FechayHora />
           </div>
         </div>
@@ -46,15 +74,11 @@ export const TablaSalida = () => {
           <Table.Row className="bg-white" key={index}>
             <Table.Cell>
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Avatar shape="circle" img={item.avatar} size="md" />
-                    <div>
-                      <p className="-mb-0.5 text-body-4 font-medium text-metal-600">{item.producto_nombre}</p>
-                      <p className="-mb-0.5 text-body-4 font-medium text-metal-600">{item.id_codigo_barra}</p>
-                      <span className="text-body-6 font-normal text-metal-500">{item.calidad}</span>
-                    </div>
-                  </div>
+                <Avatar shape="circle" img={item.avatar} size="md" />
+                <div>
+                  <p className="text-body-4 font-medium text-metal-600">{item.producto_nombre}</p>
+                  <p className="text-body-4 font-medium text-metal-600">{item.id_codigo_barra}</p>
+                  <span className="text-body-6 font-normal text-metal-500">{item.calidad}</span>
                 </div>
               </div>
             </Table.Cell>
@@ -66,11 +90,9 @@ export const TablaSalida = () => {
               <p className="text-body-5 font-medium text-metal-500">Empleado: {item.empleado_nombre}</p>
             </Table.Cell>
             <Table.Cell>
-              <div className="inline-block">
-                <Badge colorType="light" color="success" icon={<Crown size={18} weight="light" />} iconPosition="left">
-                  Delivered
-                </Badge>
-              </div>
+              <Badge colorType="light" color="success" icon={<Crown size={18} weight="light" />} iconPosition="left">
+                Delivered
+              </Badge>
             </Table.Cell>
             <Table.Cell>
               <p className="text-body-5 font-medium text-metal-500">Calidad</p>
@@ -83,19 +105,19 @@ export const TablaSalida = () => {
                     <li className="rounded px-2 py-1 hover:bg-metal-100">
                       <button className="flex w-full items-center justify-between text-body-4 font-normal text-metal-600">
                         <span>Delete</span>
-                        <span>
-                          <Trash />
-                        </span>
+                        <span><Trash /></span>
                       </button>
                     </li>
                   </ul>
                 </Popover.Container>
                 <Popover.Action>
-
-                  {user && user.role === 'admin' ? <Button type="outlineGray" size="xs" circle={true}>
-                    <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
-                  </Button> :''}
-
+                  {user && user.role === 'admin' ? (
+                    <Button type="outlineGray" size="xs" circle={true}>
+                      <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </Popover.Action>
               </Popover>
             </Table.Cell>
@@ -107,41 +129,11 @@ export const TablaSalida = () => {
 };
 
 
-/*const DataArray = [
-  {
-    avatar: "/public/Cereza.svg",
-    name: "Cereza",
-    Calidad: "Grande",
-    date: "Enero 9, 2024",
-    time: "3:45 pm",
-    amount: "KG: 85",
-    
-  },
-  {
-    avatar: "/public/mango.svg",
-    name: "Mango",
-    Calidad: "Premiun",
-    date: "Diciembre 8, 2023",
-    time: "4:45 pm",
-    amount: "KG: 100",
-  },
-  {
-    avatar: "/public/frutilla.svg",
-    name: "Frutilla",
-    Calidad: "Grande",
-    date: "Enero 15, 2024",
-    time: "3:45 pm",
-    amount: "KG: 90",
-    
-  },
-  {
-    avatar: "/public/Frambuesa.svg",
-    name: "Frambuesa",
-    Calidad: "Premium",
-    date: "Enero 5, 2024",
-    time: "3:45 pm",
-    amount: "KG: 55",
-    
-  },
-  
-];*/
+
+
+
+
+
+
+
+

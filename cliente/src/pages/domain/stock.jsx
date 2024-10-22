@@ -166,7 +166,7 @@ export const Stock = () => {
       )}
     </div>
 
-    <TablasEstantes productos={productos} /> </>
+    <TablasEstantes productos={productos} actualizarpagestock={setStockActualizado} /> </>
 };
 
 /*
