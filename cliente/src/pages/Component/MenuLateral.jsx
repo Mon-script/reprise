@@ -16,6 +16,7 @@ export const SidebarComponent = () => {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    window.location.href = "http://localhost:6969"
     setUser(null);
   }
 

@@ -5,6 +5,7 @@ import { ExcelExporter } from "../botones/exportExelBoton";
 import { useEffect, useState, useContext } from 'react';
 import { format } from 'date-fns';
 import { UserContext } from '../../../userContext';
+import {message} from  'antd'
 
 export const TablaUsuario = () => {
   const [dataArray, setData] = useState([]);
@@ -33,7 +34,9 @@ export const TablaUsuario = () => {
     if (window.confirm('¿Está seguro de inabilitar este usuario?')){
       fetch('http://localhost:3000/deleteUsuario/'+id,{method:'DELETE'})
     .then(resp =>( resp.text() ))
-    .then(resp =>{console.log(resp)})
+    .then(resp =>{console.log(resp)
+      message.success(' Operacion exitosa')
+    })
     setUpdate(true)
     }
     
@@ -43,7 +46,9 @@ export const TablaUsuario = () => {
     if (window.confirm('¿Está seguro de rectivar este usuario?')){
       fetch('http://localhost:3000/reintegrarUsuario/'+id,{method:'PUT'})
     .then(resp =>( resp.text() ))
-    .then(resp =>{console.log(resp)})
+    .then(resp =>{console.log(resp)
+      message.succes(' Operacion exitosa')
+    })
     setUpdate(true)
     }
   }

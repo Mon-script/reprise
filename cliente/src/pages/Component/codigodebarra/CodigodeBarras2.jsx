@@ -2,6 +2,7 @@
 import React, { useEffect, useContext } from 'react';
 import './CodigodeBarra2.css';
 import { UserContext } from '../../../userContext';
+import {message} from 'antd'
 
 const CodigodeBarras2 = ({ estadoForm, Texto, idEntrada, actualizarpagestock, id_codigo_barra }) => {
   
@@ -46,8 +47,10 @@ const CodigodeBarras2 = ({ estadoForm, Texto, idEntrada, actualizarpagestock, id
         .then(resp => resp.text())
         .then(resp => {
           console.log(resp);
+          message.success('Operacion exitosa')
           actualizarpagestock(true)
         });
+        
     }
 
     console.log('Código de barras escaneado:',id_codigo_barra , 'Empleado:', user.id);

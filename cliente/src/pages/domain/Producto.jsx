@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./Producto.css";
 import Modal from 'react-modal';
+import {message} from 'antd'
 
 
 
@@ -65,7 +66,7 @@ export const Producto = () => {
       return
     } 
 
-    if (productosid.includes(parseInt(codigoProducto))) {  // Verifica si el código ya existe
+    if (productosid.includes(parseInt(codigoBarra))) {  // Verifica si el código ya existe
       alert('El ID del producto ya existe. Por favor, introduce un ID diferente.')
       return
     }
@@ -80,7 +81,9 @@ export const Producto = () => {
 
 
           console.log(data)
+          message.success(' Operacion exitosa')
           setFileupdated(true)
+
 
         })
         .catch(error => {
