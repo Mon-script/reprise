@@ -55,6 +55,19 @@ export const TablaSalida = () => {
         console.log(error);
       });
   }, []);
+   // Función para formatear la fecha como en TarjetaStock
+   const formatDate = (isoDate) => {
+    return new Date(isoDate).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  // Función para formatear la hora como en TarjetaStock
+  const formatTime = (time) => {
+    return time.substring(0, 5); // Cortamos para obtener solo HH:mm
+  };
 
   return (
     <Table showCheckbox={true}>
@@ -83,8 +96,8 @@ export const TablaSalida = () => {
               </div>
             </Table.Cell>
             <Table.Cell>
-              <p className="text-body-5 font-medium text-metal-500">{format(new Date(item.fecha), 'dd/MM/yyyy')}</p>
-              <p className="text-body-6 font-normal text-metal-500">{format(new Date(`1970-01-01T${item.hora}Z`), 'HH:mm')} hs</p>
+              <p className="text-body-5 font-medium text-metal-500">{formatDate(item.fecha)}</p>
+              <p className="text-body-6 font-normal text-metal-500">{formatTime(item.hora)} hs</p>
             </Table.Cell>
             <Table.Cell>
               <p className="text-body-5 font-medium text-metal-500">Empleado: {item.empleado_nombre}</p>

@@ -49,7 +49,7 @@ export const Stock = () => {
      }*/
 
     if (!codigoProducto || !estanteria) {
-      alert('Todos los campos deben estar completados')
+      message.error('Todos los campos deben estar completados')
       return
     }
     if (productosid.includes(parseInt(codigoProducto))) {
@@ -76,13 +76,18 @@ export const Stock = () => {
           if (!resp.ok) {
             throw new Error(`HTTP error! status: ${resp.status}`);
           }
+          if(resp.ok){
+            message.success('operacion exitosa')
+          }
           return resp.text();
         })
         .then(respText => {console.log(respText)
           
-          message.success('Operacion exitosa')
+          
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {console.error('Error:', error)
+          message.error(error)
+        });
 
 
       setStockActualizado(true)

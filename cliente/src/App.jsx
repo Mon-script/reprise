@@ -13,7 +13,8 @@ import { Entrada } from './pages/domain/entrada';
 import { Salida } from './pages/domain/salida';
 import RegistroUsuario from './pages/Component/formulario/FormularioDeRegistro'
 import { UserProvider } from './userContext';
-
+import { UnathorizedRoute } from './pages/domain/unathorized';
+import ProtectedRoute from './pages/Component/Protectedrute';
 
 
 
@@ -32,8 +33,9 @@ function App() {
               <Route path='/entrada' element={<Entrada />} />
               <Route path='/salida' element={<Salida />} />
               <Route path='/home' element={<Home />} />
-              <Route path='/registro' element={<RegistroUsuario />} />
-              <Route path='personal' element={<TablaUsuario />} />
+              <Route path='/registro' element={<ProtectedRoute><RegistroUsuario/></ProtectedRoute>} />
+              <Route path='personal' element={<ProtectedRoute><TablaUsuario /></ProtectedRoute>} />
+              <Route path='desautorizado' element={<UnathorizedRoute />} />
               <Route path='*' element={<NotFound />} />
             </Route>
           </Route>

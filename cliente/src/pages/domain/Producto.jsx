@@ -62,12 +62,12 @@ export const Producto = () => {
 
     if (!name || !photo || !marca || !codigoBarra) {
      
-      alert('ERROR, Debes todo el formulario para poder enviarlo PUTARDO')
+      message.error('ERROR, Llenar el formulario Completo')
       return
     } 
 
     if (productosid.includes(parseInt(codigoBarra))) {  // Verifica si el código ya existe
-      alert('El ID del producto ya existe. Por favor, introduce un ID diferente.')
+      message.info('El ID del producto ya existe. Por favor, introduce un ID diferente.')
       return
     }
 
@@ -88,6 +88,7 @@ export const Producto = () => {
         })
         .catch(error => {
           console.error(error)
+          message.error(error)
         })
 
       setName('');

@@ -10,6 +10,33 @@ export const TablaEntrada = ( ) => {
 
   const [dataArray, setData] = useState([]);
 
+   // Función para convertir fecha y hora en objeto Date
+   const createDateTime = (fecha, hora) => {
+    const datePart = fecha.split('T')[0]; // Solo obtenemos la parte de la fecha
+    const timePart = hora; // La hora permanece igual
+    const dateTimeString = `${datePart}T${timePart}`; // Formato: 'YYYY-MM-DDTHH:mm:ss'
+    const date = new Date(dateTimeString);
+    console.log(`Fecha: ${datePart}, Hora: ${timePart}, Date Object: ${date}`); // Verifica el objeto Date
+    return date;
+  };
+
+  // Función para ordenar los datos por fecha y hora utilizando el método de inserción
+  const insertionSort = (data) => {
+    const sortedArray = [];
+    data.forEach(item => {
+      const dateTime = createDateTime(item.fecha, item.hora);
+      console.log(`Item: ${item.producto_nombre}, DateTime: ${dateTime}`); // Verifica el objeto Date
+
+      // Insertar en el lugar correcto
+      let j = sortedArray.length - 1;
+      while (j >= 0 && createDateTime(sortedArray[j].fecha, sortedArray[j].hora) < dateTime) {
+        j--;
+      }
+      sortedArray.splice(j + 1, 0, item);
+    });
+    return sortedArray;
+  };
+
   useEffect(() => {
     fetch('http://localhost:3000/entrada', {
       method: 'GET',
@@ -19,13 +46,29 @@ export const TablaEntrada = ( ) => {
     })
       .then(response => response.json())
       .then(result => {
-        setData(result);
-        console.log(result);
+        console.log('Datos recibidos:', result); // Verifica los datos
+        const sortedData = insertionSort(result);
+        setData(sortedData);
+        console.log('Datos ordenados:', sortedData); // Verifica los datos ordenados
       })
       .catch(error => {
         console.log(error);
       });
   }, []);
+   // Función para formatear la fecha como en TarjetaStock
+   const formatDate = (isoDate) => {
+    return new Date(isoDate).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
+
+  // Función para formatear la hora como en TarjetaStock
+  const formatTime = (time) => {
+    return time.substring(0, 5); // Cortamos para obtener solo HH:mm
+  };
+
 
 
   return (
@@ -61,8 +104,8 @@ export const TablaEntrada = ( ) => {
               </div>
             </Table.Cell>
             <Table.Cell>
-              <p className="text-body-5 font-medium text-metal-500">{format(new Date(item.fecha), 'dd/MM/yyyy')}</p>
-              <p className="text-body-6 font-normal text-metal-500">{format(new Date(`1970-01-01T${item.hora}Z`), 'HH:mm:ss')} hs</p>
+              <p className="text-body-5 font-medium text-metal-500">{formatDate(item.fecha)}</p>
+              <p className="text-body-6 font-normal text-metal-500">{formatTime(item.hora)} hs</p>
             </Table.Cell>
             <Table.Cell>
               <p className="text-body-5 font-medium text-metal-500">Estanteria: {item.estante}</p>

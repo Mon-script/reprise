@@ -34,6 +34,7 @@ export const UserProvider = ({ children }) => {
                     localStorage.removeItem('token');
                     setUser(null);
                     console.log("ya sale")
+                    window.location.href = "http://localhost:6969"
                 }, expirationTime);
     
                 return () => clearTimeout(timeoutId);
