@@ -69,6 +69,33 @@ export const TablaSalida = () => {
     return time.substring(0, 5); // Cortamos para obtener solo HH:mm
   };
 
+  const deleteRow = (id)=>{
+    fetch('http://localhost:3000/deleteSalida', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(id),
+    })
+      .then(resp => {
+        if (!resp.ok) {
+          throw new Error(`HTTP error! status: ${resp.status}`);
+        }
+        if(resp.ok){
+          message.success('operacion exitosa')
+        }
+        return resp.text();
+      })
+      .then(respText => {console.log(respText)
+        
+        
+      })
+      .catch(error => {console.error('Error:', error)
+        message.error(error)
+      });
+
+  }
+
   return (
     <Table showCheckbox={true}>
       <Table.Caption>
@@ -125,7 +152,7 @@ export const TablaSalida = () => {
                 </Popover.Container>
                 <Popover.Action>
                   {user && user.role === 'admin' ? (
-                    <Button type="outlineGray" size="xs" circle={true}>
+                    <Button type="outlineGray" size="xs" circle={true} onClick={()=>{deleteRow(itme.id)}}>
                       <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
                     </Button>
                   ) : (

@@ -24,3 +24,19 @@ JOIN
     console.log(e);
   }
 };
+
+module.exports.deleteEntrada =(req, res)=>{
+  const id=req.body
+  const consult = `DELETE FROM ENTRADA WHERE id= ? `
+
+  try{
+    connection.query(consult,[id], (err, results)=>{
+      console.log(results)
+      res.json(results)
+    })
+  } catch(e){
+    console.log(e)
+    res.json(e)
+    
+  }
+}

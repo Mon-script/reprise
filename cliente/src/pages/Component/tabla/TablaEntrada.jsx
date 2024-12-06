@@ -2,13 +2,15 @@ import { Avatar, Badge, Button, Popover, Table, DatePicker  } from 'keep-react'
 import { ArrowsDownUp, Crown, Cube, DotsThreeOutline, Pencil, Trash, FileXls } from 'phosphor-react';
 import { FechayHora } from '../DatePicker';
 import { ExcelExporter } from "../botones/exportExelBoton";
-import react,{useState, useEffect} from'react'
+import react,{useState, useEffect, useContext} from'react'
+import { UserContext } from '../../../userContext';
 import { format } from 'date-fns';
 
 
 export const TablaEntrada = ( ) => {
 
   const [dataArray, setData] = useState([]);
+  const { user } = useContext(UserContext);
 
    // Función para convertir fecha y hora en objeto Date
    const createDateTime = (fecha, hora) => {
@@ -69,6 +71,33 @@ export const TablaEntrada = ( ) => {
     return time.substring(0, 5); // Cortamos para obtener solo HH:mm
   };
 
+  const deleteRow = (id)=>{
+    fetch('http://localhost:3000/deleteEntrada', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(id),
+    })
+      .then(resp => {
+        if (!resp.ok) {
+          throw new Error(`HTTP error! status: ${resp.status}`);
+        }
+        if(resp.ok){
+          message.success('operacion exitosa')
+        }
+        return resp.text();
+      })
+      .then(respText => {console.log(respText)
+        
+        
+      })
+      .catch(error => {console.error('Error:', error)
+        message.error(error)
+      });
+
+  }
+
 
 
   return (
@@ -128,17 +157,20 @@ export const TablaEntrada = ( ) => {
                     <li className="rounded px-2 py-1 hover:bg-metal-100">
                       <button className="flex w-full items-center justify-between text-body-4 font-normal text-metal-600">
                         <span>Delete</span>
-                        <span>
-                          <Trash />
-                        </span>
+                        <span><Trash /></span>
                       </button>
                     </li>
                   </ul>
                 </Popover.Container>
                 <Popover.Action>
-                  <Button type="outlineGray" size="xs" circle={true}>
-                    <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
-                  </Button>
+                  {user && user.role === 'admin' ? (
+                    <Button type="outlineGray" size="xs" circle={true}
+                    onClick={()=>{deleteRow(itme.id)}}>
+                      <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </Popover.Action>
               </Popover>
             </Table.Cell>

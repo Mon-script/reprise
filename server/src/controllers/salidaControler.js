@@ -57,6 +57,22 @@ module.exports.postEntredaSalida = (req, res) => {
   });
 };
 
+module.exports.deleteSalida =(req, res)=>{
+  const id=req.body
+  const consult = `DELETE FROM SALIDA WHERE id= ? `
+
+  try{
+    connection.query(consult,[id], (err, results)=>{
+      console.log(results)
+      res.json(results)
+    })
+  } catch(e){
+    console.log(e)
+    res.json(e)
+    
+  }
+}
+
 
 /*
 module.exports.postEntredaSalida = (req, res) => {
