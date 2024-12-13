@@ -31,7 +31,7 @@ JOIN
     console.log(e);
   }
 };
-
+ 
 module.exports.postEntredaSalida = (req, res) => {
   const { id_codigo_barra, id_empleado, fecha, hora, id_entrada } = req.body;
 

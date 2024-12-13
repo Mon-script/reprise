@@ -73,7 +73,7 @@ export const TablaEntrada = ( ) => {
 
   const deleteRow = (id)=>{
     fetch('http://localhost:3000/deleteEntrada', {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -165,7 +165,7 @@ export const TablaEntrada = ( ) => {
                 <Popover.Action>
                   {user && user.role === 'admin' ? (
                     <Button type="outlineGray" size="xs" circle={true}
-                    onClick={()=>{deleteRow(itme.id)}}>
+                    onClick={()=>{deleteRow(item.id)}}>
                       <DotsThreeOutline size={14} color="#5E718D" weight="bold" />
                     </Button>
                   ) : (
